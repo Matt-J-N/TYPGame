@@ -61,52 +61,18 @@ public class TitleScreen extends JFrame {
 		labelTitle.setFont(new Font("Helvetica nueu", Font.BOLD, 24));
 		panel.add(labelTitle);
 		
-		button = new JButton(buttonArray[0]);
-		button.setAlignmentX(CENTER_ALIGNMENT);
-		button.setBackground(Color.WHITE);
-		button.addActionListener(new ButtonListener1());
-		button.setPreferredSize(buttonDim);
-		panel.add(button);
-		
-		button = new JButton(buttonArray[1]);
-		button.setAlignmentX(CENTER_ALIGNMENT);
-		button.setBackground(Color.WHITE);
-		button.addActionListener(new ButtonListener1());
-		button.setPreferredSize(buttonDim);
-		panel.add(button);
-		
-		button = new JButton(buttonArray[2]);
-		button.setAlignmentX(CENTER_ALIGNMENT);
-		button.setBackground(Color.WHITE);
-		button.addActionListener(new ButtonListener1());
-		button.setPreferredSize(buttonDim);
-		panel.add(button);
-
-		button = new JButton(buttonArray[3]);
-		button.setAlignmentX(CENTER_ALIGNMENT);
-		button.setBackground(Color.WHITE);
-		button.addActionListener(new ButtonListener1());
-		button.setPreferredSize(buttonDim);
-		panel.add(button);
-		
-		/*int j = 50;
-		
-		for(int i = 0; i < buttonArray.length; i++) {
-			
-			panel = new JPanel();
-			panel.setBounds(500, j, 300, 150);
-			add(panel);
-			
+		//Loop for main menu button create
+		//Each button label from buttonArray assigned
+		//Buttons settings established and buttons added to panel via buttonInit call
+		for (int i = 0; i < buttonArray.length; i++) {
 			button = new JButton(buttonArray[i]);
-			button.setPreferredSize(buttonDim);
-			panel.add(button);
-			
-			j = j + 150;
-		
-		}*/
-		
+			buttonInit(button, panel);
+		}
+
 	}
 	
+	
+	//Button Listener for Main Menu screen 
 	private class ButtonListener1 implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -136,6 +102,7 @@ public class TitleScreen extends JFrame {
 		
 	}
 	
+	//Button Listener for colour selection menu - Prompted by playScreen()
 	private class ButtonListener2 implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -160,6 +127,7 @@ public class TitleScreen extends JFrame {
 				playerColor = Color.GREEN;	
 			}
 
+			//Call game to run once colour selection is made
 			gameRun();
 					
 		}
@@ -182,6 +150,14 @@ public class TitleScreen extends JFrame {
 			}
 			
 		}	
+	}
+	
+	private void buttonInit(JButton button, JPanel panel) {
+		button.setAlignmentX(CENTER_ALIGNMENT);
+		button.setBackground(Color.WHITE);
+		button.addActionListener(new ButtonListener1());
+		button.setPreferredSize(buttonDim);
+		panel.add(button);
 	}
 	
 	public void creditScreen() {

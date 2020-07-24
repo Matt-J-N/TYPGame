@@ -133,10 +133,11 @@ public class Draw extends JFrame {
     	//Reference for hexagon drawing: https://stackoverflow.com/questions/35853902/drawing-hexagon-using-java-error
     	//See dissertation reference [14] for full acknowledgement
     	
-        //Initial coordinate positions for first hexagon
+        //Initial coordinate positions in drawingPanel for first hexagon
     	int coordX = 500;
     	int coordY= 100;
     	
+    	//Hexagon tiers relative to Y-coordinate position
     	//Tier 1
     	Hexagon hexagon1 = new Hexagon(new Point(coordX, coordY), defaultRad);
     	Hexagon hexagon2 = new Hexagon(new Point(coordX + (2*defaultRad), coordY), defaultRad);
@@ -1187,7 +1188,7 @@ public class Draw extends JFrame {
 			    if (getArrayLength(pControls) == 37) {
 			    	ts.winScreen();
 			    //Lose condition based on territory	
-			    } else if (getArrayLength(aiOneControls) == 1 || getArrayLength(aiTwoControls) == 37 || getArrayLength(aiThreeControls) == 37) {
+			    } else if (getArrayLength(aiOneControls) == 37 || getArrayLength(aiTwoControls) == 37 || getArrayLength(aiThreeControls) == 37) {
 			    	ts.loseScreen();
 			    }
 			    
