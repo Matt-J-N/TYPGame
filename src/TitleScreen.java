@@ -66,11 +66,24 @@ public class TitleScreen extends JFrame {
 		//Buttons settings established and buttons added to panel via buttonInit call
 		for (int i = 0; i < buttonArray.length; i++) {
 			button = new JButton(buttonArray[i]);
-			buttonInit(button, panel);
+			buttonInit(button, panel, new ButtonListener1());
 		}
-
 	}
 	
+	private void buttonInit(JButton button, JPanel panel, ActionListener b) {
+		button.setAlignmentX(CENTER_ALIGNMENT);
+		button.setBackground(Color.WHITE);
+		button.addActionListener(b);
+		button.setPreferredSize(buttonDim);
+		panel.add(button);
+	}
+	
+	private void screenFrameInit(JFrame thisFrame, int closeOperation, int w, int h) {
+		thisFrame.setDefaultCloseOperation(closeOperation);
+		thisFrame.setBounds(0, 0, w, h);
+		thisFrame.setVisible(true);
+		thisFrame.setLocationRelativeTo(null);
+	}
 	
 	//Button Listener for Main Menu screen 
 	private class ButtonListener1 implements ActionListener {
@@ -95,11 +108,8 @@ public class TitleScreen extends JFrame {
 			//Condition for EXIT button	
 			}else if (buttonType == buttonArray[3]) {
 				System.exit(0);
-				
 			}	
-			
 		}
-		
 	}
 	
 	//Button Listener for colour selection menu - Prompted by playScreen()
@@ -128,8 +138,7 @@ public class TitleScreen extends JFrame {
 			}
 
 			//Call game to run once colour selection is made
-			gameRun();
-					
+			gameRun();	
 		}
 	}
 	
@@ -148,24 +157,13 @@ public class TitleScreen extends JFrame {
 			}else if (buttonType == wlButtonArray[1]) {
 				System.exit(0);
 			}
-			
 		}	
-	}
-	
-	private void buttonInit(JButton button, JPanel panel) {
-		button.setAlignmentX(CENTER_ALIGNMENT);
-		button.setBackground(Color.WHITE);
-		button.addActionListener(new ButtonListener1());
-		button.setPreferredSize(buttonDim);
-		panel.add(button);
 	}
 	
 	public void creditScreen() {
 		JFrame creditScreen = new JFrame();
-		creditScreen.setDefaultCloseOperation(HIDE_ON_CLOSE);
-		creditScreen.setBounds(0, 0, 600, 250);
-		creditScreen.setVisible(true);
-		
+		screenFrameInit(creditScreen, HIDE_ON_CLOSE, 600, 250);
+
 		panel = new JPanel();
 		panel.setBounds(0, 0, 600, 250);
 		panel.setBackground(Color.WHITE);
@@ -182,10 +180,8 @@ public class TitleScreen extends JFrame {
 	
 	public void howScreen() {
 		JFrame howScreen = new JFrame();
-		howScreen.setDefaultCloseOperation(HIDE_ON_CLOSE);
-		howScreen.setBounds(0, 0, 900, 600);
-		howScreen.setVisible(true);
-		
+		screenFrameInit(howScreen, HIDE_ON_CLOSE, 900, 600);
+
 		panel = new JPanel();
 		panel.setBounds(0, 0, 900, 600);
 		panel.setBackground(Color.WHITE);
@@ -210,12 +206,8 @@ public class TitleScreen extends JFrame {
 	
 	public void colorSelect() {
 		JFrame colorSelect = new JFrame();
-		//Change from exit to pop up again? > Player MUST choose colour
-		colorSelect.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		colorSelect.setBounds(400, 200, 500, 400);
-		colorSelect.setVisible(true);
-		colorSelect.setLocationRelativeTo(null);
-		
+		screenFrameInit(colorSelect, HIDE_ON_CLOSE, 500, 400);
+
 		panel = new JPanel();
 		panel.setBounds(0, 0, 300, 500);
 		panel.setBackground(Color.WHITE);
@@ -225,40 +217,16 @@ public class TitleScreen extends JFrame {
 		selectHeader.setFont(new Font("Helvetica nueu", Font.PLAIN, 22));
 		panel.add(selectHeader);
 		
-		button = new JButton(playerColors[0]);
-		button.setAlignmentX(CENTER_ALIGNMENT);
-		button.setBackground(Color.WHITE);
-		button.addActionListener(new ButtonListener2());
-		panel.add(button);
-		
-		button = new JButton(playerColors[1]);
-		button.setAlignmentX(CENTER_ALIGNMENT);
-		button.setBackground(Color.WHITE);
-		button.addActionListener(new ButtonListener2());
-		panel.add(button);
-		
-		button = new JButton(playerColors[2]);
-		button.setAlignmentX(CENTER_ALIGNMENT);
-		button.setBackground(Color.WHITE);
-		button.addActionListener(new ButtonListener2());
-		panel.add(button);
-		
-		button = new JButton(playerColors[3]);
-		button.setAlignmentX(CENTER_ALIGNMENT);
-		button.setBackground(Color.WHITE);
-		button.addActionListener(new ButtonListener2());
-		panel.add(button);
-		
+		for (int i = 0; i < playerColors.length; i++) {
+			button = new JButton(playerColors[i]);
+			buttonInit(button, panel, new ButtonListener2());
+		}
 	}
 	
 	public void winScreen() {
 		JFrame winScreen = new JFrame();
-		winScreen.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		winScreen.setResizable(false);
-		winScreen.setBounds(0, 0, 1400, 900);
-		winScreen.setVisible(true);
-		winScreen.setLocationRelativeTo(null);
-		
+		screenFrameInit(winScreen, HIDE_ON_CLOSE, 1400, 900);
+
 		winPanel = new JPanel();
 		winPanel.setBounds(0, 0, 1400, 900);
 		winPanel.setBackground(Color.WHITE);
@@ -268,29 +236,18 @@ public class TitleScreen extends JFrame {
 		subWinText.setFont(new Font("Helvetica nueu", Font.BOLD, 24));
 		winPanel.add(winText);
 		
-		winButton = new JButton(wlButtonArray[0]);
-		winButton.setAlignmentX(CENTER_ALIGNMENT);
-		winButton.setBackground(Color.WHITE);
-		winButton.addActionListener(new ButtonListener3());
-		winPanel.add(winButton);
-		
-		winButton = new JButton(wlButtonArray[1]);
-		winButton.setAlignmentX(CENTER_ALIGNMENT);
-		winButton.setBackground(Color.WHITE);
-		winButton.addActionListener(new ButtonListener3());
-		winPanel.add(winButton);
-		
+		for (int i = 0; i < wlButtonArray.length; i++) {
+			winButton = new JButton(wlButtonArray[i]);
+			buttonInit(winButton, winPanel, new ButtonListener3());
+		}
+
 		winPanel.add(subWinText);
 		
 	}
 	
 	public void loseScreen() {
 		JFrame loseScreen = new JFrame();
-		loseScreen.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		loseScreen.setResizable(false);
-		loseScreen.setBounds(0, 0, 1400, 900);
-		loseScreen.setVisible(true);
-		loseScreen.setLocationRelativeTo(null);
+		screenFrameInit(loseScreen, HIDE_ON_CLOSE, 1400, 900);
 		
 		losePanel = new JPanel();
 		losePanel.setBounds(0, 0, 1400, 900);
@@ -300,18 +257,10 @@ public class TitleScreen extends JFrame {
 		loseText.setFont(new Font("Helvetica nueu", Font.BOLD, 48));
 		losePanel.add(loseText);
 		
-		loseButton = new JButton(wlButtonArray[0]);
-		loseButton.setAlignmentX(CENTER_ALIGNMENT);
-		loseButton.setBackground(Color.WHITE);
-		loseButton.addActionListener(new ButtonListener3());
-		losePanel.add(loseButton);
-		
-		loseButton = new JButton(wlButtonArray[1]);
-		loseButton.setAlignmentX(CENTER_ALIGNMENT);
-		loseButton.setBackground(Color.WHITE);
-		loseButton.addActionListener(new ButtonListener3());
-		losePanel.add(loseButton);
-		
+		for (int i = 0; i < wlButtonArray.length; i++) {
+			loseButton = new JButton(wlButtonArray[i]);
+			buttonInit(loseButton, losePanel, new ButtonListener3());
+		}
 	}
 	
 	public void gameRun() {
