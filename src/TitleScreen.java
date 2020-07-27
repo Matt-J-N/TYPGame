@@ -54,10 +54,9 @@ public class TitleScreen extends JFrame {
 		super("COMP39X Tile-Based Strategy Game");
 		
 		panel = new JPanel();
-		panel.setBounds(0, 0, 1400, 900);
-		panel.setBackground(Color.WHITE);
-		panel.setLayout(new GridLayout(0, 1));
+		panelInit(panel, 1400, 900);
 		add(panel);
+
 		labelTitle.setFont(new Font("Helvetica nueu", Font.BOLD, 24));
 		panel.add(labelTitle);
 		
@@ -70,19 +69,25 @@ public class TitleScreen extends JFrame {
 		}
 	}
 	
+	private void screenFrameInit(JFrame thisFrame, int closeOperation, int w, int h) {
+		thisFrame.setDefaultCloseOperation(closeOperation);
+		thisFrame.setBounds(0, 0, w, h);
+		thisFrame.setVisible(true);
+		thisFrame.setLocationRelativeTo(null);
+	}
+	
+	private void panelInit(JPanel panel, int w, int h) {
+		panel.setBounds(0, 0, w, h);
+		panel.setBackground(Color.WHITE);
+		panel.setLayout(new GridLayout(0,1));
+	}
+	
 	private void buttonInit(JButton button, JPanel panel, ActionListener b) {
 		button.setAlignmentX(CENTER_ALIGNMENT);
 		button.setBackground(Color.WHITE);
 		button.addActionListener(b);
 		button.setPreferredSize(buttonDim);
 		panel.add(button);
-	}
-	
-	private void screenFrameInit(JFrame thisFrame, int closeOperation, int w, int h) {
-		thisFrame.setDefaultCloseOperation(closeOperation);
-		thisFrame.setBounds(0, 0, w, h);
-		thisFrame.setVisible(true);
-		thisFrame.setLocationRelativeTo(null);
 	}
 	
 	//Button Listener for Main Menu screen 
@@ -165,13 +170,12 @@ public class TitleScreen extends JFrame {
 		screenFrameInit(creditScreen, HIDE_ON_CLOSE, 600, 250);
 
 		panel = new JPanel();
-		panel.setBounds(0, 0, 600, 250);
-		panel.setBackground(Color.WHITE);
+		panelInit(panel, 600, 250);
 		creditScreen.add(panel);
 		
 		JLabel credits = new JLabel("<html>Idea, programming and design by Matthew Neersoo,<br/>"
-								+ "with special thanks to Dr. Ullrich Hustadt<br/>"
-								+ "& the authors of all referenced material.</html>");
+									+ "with special thanks to Dr. Ullrich Hustadt<br/>"
+									+ "& the authors of all referenced material.</html>");
 		credits.setFont(new Font("Helvetica nueu", Font.PLAIN, 18));
 		credits.setAlignmentX(CENTER_ALIGNMENT);
 		panel.add(credits);
@@ -183,9 +187,7 @@ public class TitleScreen extends JFrame {
 		screenFrameInit(howScreen, HIDE_ON_CLOSE, 900, 600);
 
 		panel = new JPanel();
-		panel.setBounds(0, 0, 900, 600);
-		panel.setBackground(Color.WHITE);
-		panel.setLayout(new GridLayout(0, 1));
+		panelInit(panel, 900, 600);
 		howScreen.add(panel);
 		
 		howTitle.setFont(new Font("Helvetica nueu", Font.BOLD, 24));
@@ -209,9 +211,7 @@ public class TitleScreen extends JFrame {
 		screenFrameInit(colorSelect, HIDE_ON_CLOSE, 500, 400);
 
 		panel = new JPanel();
-		panel.setBounds(0, 0, 300, 500);
-		panel.setBackground(Color.WHITE);
-		panel.setLayout(new GridLayout(0, 1));
+		panelInit(panel, 300, 500);
 		colorSelect.add(panel);
 		
 		selectHeader.setFont(new Font("Helvetica nueu", Font.PLAIN, 22));
@@ -228,10 +228,9 @@ public class TitleScreen extends JFrame {
 		screenFrameInit(winScreen, HIDE_ON_CLOSE, 1400, 900);
 
 		winPanel = new JPanel();
-		winPanel.setBounds(0, 0, 1400, 900);
-		winPanel.setBackground(Color.WHITE);
-		winPanel.setLayout(new GridLayout(0, 1));
+		panelInit(winPanel, 1400, 900);
 		winScreen.add(winPanel);
+		
 		winText.setFont(new Font("Helvetica nueu", Font.BOLD, 48));
 		subWinText.setFont(new Font("Helvetica nueu", Font.BOLD, 24));
 		winPanel.add(winText);
@@ -250,10 +249,9 @@ public class TitleScreen extends JFrame {
 		screenFrameInit(loseScreen, HIDE_ON_CLOSE, 1400, 900);
 		
 		losePanel = new JPanel();
-		losePanel.setBounds(0, 0, 1400, 900);
-		losePanel.setBackground(Color.WHITE);
-		losePanel.setLayout(new GridLayout(0, 1));
+		panelInit(losePanel, 1400, 900);
 		loseScreen.add(losePanel);
+		
 		loseText.setFont(new Font("Helvetica nueu", Font.BOLD, 48));
 		losePanel.add(loseText);
 		
