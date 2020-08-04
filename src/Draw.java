@@ -28,8 +28,8 @@ public class Draw extends JFrame {
     private String[] colorStrings = new String[] {"Blue", "Red", "Yellow", "Green"};
     
     private int[] controlledTiles = new int[38];
-    
-    //Tile storage arrays
+
+    //General tile storage arrays
     
     int[] emptyTiles = new int[21];
     
@@ -41,7 +41,7 @@ public class Draw extends JFrame {
     
     int[] farmTiles = new int[4];
     
-    //Player specific arrays
+    //Human player (controlled) tile arrays
     
     int[] pControls = new int[38];
     
@@ -59,31 +59,27 @@ public class Draw extends JFrame {
     
     int[] aiThreeControls = new int[38];
     
+    //Colour handling variables
+    
+    private Color col = Color.WHITE;
+    
     private String colString;
     
 	private Color playerColor = TitleScreen.playerColor();
+	
+	private Color colorAIOne;
+    
+    private Color colorAITwo;
+    
+    private Color colorAIThree; 
+	
+	//Bonus modifier initialisations
 	
 	private double pMilPower = 1;
 	
 	private double pFood = 1;
 	
     private double pInfluence = 1;
-    
-    //private int pTiles = 0;
-    
-    //private int aiTiles = 0;
-    
-    //private int aiOneTiles = 0;
-    
-    //private int aiTwoTiles = 0;
-    
-    //private int aiThreeTiles = 0;
-    
-    //private int aiOneCurHex = 6;
-    
-    //private int aiTwoCurHex = 28; 
-    
-    //private int aiThreeCurHex = 33;
     
     private double milPowerAIOne = 1;
     
@@ -103,15 +99,7 @@ public class Draw extends JFrame {
     	    
     private double influenceAIThree = 1;
     
-    private Color colorAIOne;
-    
-    private Color colorAITwo;
-    
-    private Color colorAIThree; 
-    
     //private int curPlayer = 1;
-    
-    private Color col = Color.WHITE;
     
     private int curHex = 0;
     
@@ -131,7 +119,6 @@ public class Draw extends JFrame {
     
     public Draw(){
     	//Reference for hexagon drawing: https://stackoverflow.com/questions/35853902/drawing-hexagon-using-java-error
-    	//See dissertation reference [14] for full acknowledgement
     	
         //Initial coordinate positions in drawingPanel for first hexagon
     	int coordX = 500;
@@ -190,8 +177,6 @@ public class Draw extends JFrame {
     	Hexagon hexagon36 = new Hexagon(new Point(coordX + (4*defaultRad), coordY + (12*defaultRad)), defaultRad);
     	Hexagon hexagon37 = new Hexagon(new Point(coordX + (6*defaultRad), coordY + (12*defaultRad)), defaultRad);
     	
-    	
-    	
         drawingPanel = new DrawingPanel(hexagon1, hexagon2, hexagon3, hexagon4, hexagon5, hexagon6, hexagon7,
         								hexagon8, hexagon9, hexagon10, hexagon11, hexagon12, hexagon13, hexagon14,
         								hexagon15, hexagon16, hexagon17, hexagon18, hexagon19, hexagon20, hexagon21,
@@ -212,6 +197,7 @@ public class Draw extends JFrame {
                 
         drawingPanel.addMouseListener(new MouseAdapter(){
         	
+        	//Retrieve X-Y coordinates of mouse click(s)
             public void mouseClicked(MouseEvent e) {
             	
             	int clickX = e.getX();
@@ -220,6 +206,38 @@ public class Draw extends JFrame {
 			    /*int[] playerSur = mc.getSurTiles(curHex);
 			    System.out.println("PLAYER SURTILES: " + Arrays.toString(playerSur));*/
 			    
+			    //POTENTIAL EFFICIENT LOOP
+			    /*for (int i = 0; i < hexArray.length; i++) {
+			    	if (hexArray[i].isInside(clickX, clickY)){
+			    		curHex = i+1;
+				    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
+				    			
+				    	if (tileTakeAttempt(probability) == true) {
+				    		col = playerColor;
+				    		pControls[curHex-1] = curHex;
+				    		
+				    		if (isWeapFac(curHex) == true) {
+				    			pConMilPower[curHex-1] = curHex;
+				    		} else if (isMediaComp(1) == true) {
+				    			pConInfluence[curHex-1] = curHex;
+				    		} else if (isFarmland(1) == true) {
+				    			pConFood[curHex-1] = curHex;
+				    		}
+				    		
+				    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
+				    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
+				    		drawingPanel.paintImmediately(getXMin(hexagon1), getYMin(hexagon1), calcWidth(hexagon1), calcHeight(hexagon1));
+				    		takeSuccess();
+				    		
+				    	}else if (tileTakeAttempt(probability) == false){
+				    		failedTake();
+
+				    	}
+			    	}else {
+			    		System.out.println("NO HEX");
+			    	}
+			    }*/
+
 			    if (hexagon1.isInside(clickX, clickY)) {
 			    	curHex = 1;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
@@ -228,7 +246,8 @@ public class Draw extends JFrame {
 			    		col = playerColor;
 			    		pControls[curHex-1] = curHex;
 			    		
-			    		if (isWeapFac(1) == true) {
+			    		//Change to isWeapFac(curHex)
+			    		if (isWeapFac(curHex) == true) {
 			    			pConMilPower[curHex-1] = curHex;
 			    		} else if (isMediaComp(1) == true) {
 			    			pConInfluence[curHex-1] = curHex;
@@ -1151,7 +1170,6 @@ public class Draw extends JFrame {
 			    }
 			    
 			    //Update modifiers and other info. at bottom of screen
-			    //PLAYER TERRITORY LOSS NOT WORKING --- FIX
 			    
 			    aiTurns(colorAIOne, milPowerAIOne, foodAIOne, influenceAIOne, aiOneControls, pControls, aiTwoControls, aiThreeControls,
 			    		milPowerAITwo, influenceAITwo, foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree,  
@@ -1202,6 +1220,13 @@ public class Draw extends JFrame {
         //private static final long serialVersionUID = 5701311351092275287L;
 		private static final long serialVersionUID = 1L;
 		
+		private String[] hexes = new String[] {"hexagon1","hexagon2", "hexagon3", "hexagon4", "hexagon5", "hexagon6", "hexagon7", 
+												"hexagon8", "hexagon9", "hexagon10", "hexagon11", "hexagon12", "hexagon13", "hexagon14", 
+												"hexagon15", "hexagon16", "hexagon17", "hexagon18", "hexagon19", "hexagon20", "hexagon21", 
+												"hexagon22", "hexagon23", "hexagon24", "hexagon25", "hexagon26", "hexagon27",
+												"hexagon28", "hexagon29", "hexagon30", "hexagon31", "hexagon32", 
+												"hexagon33", "hexagon34", "hexagon35", "hexagon36", "hexagon37"};
+
 		//Tier 1
         private Hexagon hexagon1;
         private Hexagon hexagon2;

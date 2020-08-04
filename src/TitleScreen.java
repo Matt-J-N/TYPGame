@@ -69,6 +69,7 @@ public class TitleScreen extends JFrame {
 		}
 	}
 	
+	//JFrame initialisation method
 	private void screenFrameInit(JFrame thisFrame, int closeOperation, int w, int h) {
 		thisFrame.setDefaultCloseOperation(closeOperation);
 		thisFrame.setBounds(0, 0, w, h);
@@ -76,12 +77,15 @@ public class TitleScreen extends JFrame {
 		thisFrame.setLocationRelativeTo(null);
 	}
 	
+	//JPanel initialisation method
 	private void panelInit(JPanel panel, int w, int h) {
 		panel.setBounds(0, 0, w, h);
 		panel.setBackground(Color.WHITE);
 		panel.setLayout(new GridLayout(0,1));
 	}
 	
+	
+	//JButton initilisation method
 	private void buttonInit(JButton button, JPanel panel, ActionListener b) {
 		button.setAlignmentX(CENTER_ALIGNMENT);
 		button.setBackground(Color.WHITE);
@@ -95,6 +99,8 @@ public class TitleScreen extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
+			//Pass source text of button pressed
+			//If statement to match source text to button text and call appropriate screen
 			JButton button = (JButton) e.getSource();
 			String buttonType = button.getText();
 	
