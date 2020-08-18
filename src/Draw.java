@@ -18,92 +18,62 @@ public class Draw extends JFrame {
     //private static final long serialVersionUID = 3775690273871048733L;
 
 	private DrawingPanel drawingPanel;
-    
     Random rd = new Random();
-    
     private int defaultRad = 50;
-    
     private int round = 0;
-    
     private String[] colorStrings = new String[] {"Blue", "Red", "Yellow", "Green"};
-    
     private int[] controlledTiles = new int[38];
 
     //General tile storage arrays
     
     int[] emptyTiles = new int[21];
-    
     int[] citTiles = new int[4];
-    
     int[] medTiles = new int[4];
-    
     int[] weapTiles = new int[4];
-    
     int[] farmTiles = new int[4];
     
     //Human player (controlled) tile arrays
     
     int[] pControls = new int[38];
-    
     int[] pConMilPower = new int[38];
-    
     int[] pConInfluence = new int[38];
-    
     int[] pConFood = new int[38];
     
     //AI control arrays
     
     int[] aiOneControls = new int[38];
-    
     int[] aiTwoControls = new int[38];
-    
     int[] aiThreeControls = new int[38];
     
     //Colour handling variables
     
     private Color col = Color.WHITE;
-    
     private String colString;
-    
 	private Color playerColor = TitleScreen.playerColor();
-	
 	private Color colorAIOne;
-    
     private Color colorAITwo;
-    
     private Color colorAIThree; 
 	
 	//Bonus modifier initialisations
 	
 	private double pMilPower = 1;
-	
 	private double pFood = 1;
-	
     private double pInfluence = 1;
-    
     private double milPowerAIOne = 1;
-    
     private double foodAIOne = 1;
-    
     private double influenceAIOne = 1;
-    
-    private double milPowerAITwo = 1;
-    	    
-    private double foodAITwo = 1;
-    	    
+    private double milPowerAITwo = 1;   
+    private double foodAITwo = 1;  
     private double influenceAITwo = 1;
-    
-    private double milPowerAIThree = 1;
-    	    
-    private double foodAIThree = 1;
-    	    
+    private double milPowerAIThree = 1; 
+    private double foodAIThree = 1; 
     private double influenceAIThree = 1;
-    
-    //private int curPlayer = 1;
     
     private int curHex = 0;
     
     /*private int pCurPos = 0;
+    
+    private int curPlayer = 1;
     
     private int curPosAIOne;
     
@@ -241,929 +211,225 @@ public class Draw extends JFrame {
 			    if (hexagon1.isInside(clickX, clickY)) {
 			    	curHex = 1;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
-			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
 			    		
-			    		//Change to isWeapFac(curHex)
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(1) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(1) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon1), getYMin(hexagon1), calcWidth(hexagon1), calcHeight(hexagon1));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-
-			    	}
+			    	hexProcess(probability, curHex, hexagon1);
 			    	
 			    }else if (hexagon2.isInside(clickX, clickY)) {
 			    	curHex = 2;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    	
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon2), getYMin(hexagon2), calcWidth(hexagon2), calcHeight(hexagon2));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon2);
 
 			    }else if (hexagon3.isInside(clickX, clickY)) {
 			    	curHex = 3;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon3), getYMin(hexagon3), calcWidth(hexagon3), calcHeight(hexagon3));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon3);
+			    	
 
 			    }else if (hexagon4.isInside(clickX, clickY)) {
 			    	curHex = 4;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon4), getYMin(hexagon4), calcWidth(hexagon4), calcHeight(hexagon4));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon4);
 
 			    }else if (hexagon5.isInside(clickX, clickY)) {
 			    	curHex = 5;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon5), getYMin(hexagon5), calcWidth(hexagon5), calcHeight(hexagon5));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon5);
 
 			    }else if (hexagon6.isInside(clickX, clickY)) {
 			    	curHex = 6;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon6), getYMin(hexagon6), calcWidth(hexagon6), calcHeight(hexagon6));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon6);
 
 			    }else if (hexagon7.isInside(clickX, clickY)) {
 			    	curHex = 7;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon7), getYMin(hexagon7), calcWidth(hexagon7), calcHeight(hexagon7));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon7);
 
 			    }else if (hexagon8.isInside(clickX, clickY)) {
 			    	curHex = 8;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon8), getYMin(hexagon8), calcWidth(hexagon8), calcHeight(hexagon8));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon8);
 
 			    }else if (hexagon9.isInside(clickX, clickY)) {
 			    	curHex = 9;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon9), getYMin(hexagon9), calcWidth(hexagon9), calcHeight(hexagon9));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon9);
 
 			    }else if (hexagon10.isInside(clickX, clickY)) {
 			    	curHex = 10;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon10), getYMin(hexagon10), calcWidth(hexagon10), calcHeight(hexagon10));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon10);
 
 			    }else if (hexagon11.isInside(clickX, clickY)) {
 			    	curHex = 11;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon11), getYMin(hexagon11), calcWidth(hexagon11), calcHeight(hexagon11));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon11);
 	
 			    }else if (hexagon12.isInside(clickX, clickY)) {
 			    	curHex = 12;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon12), getYMin(hexagon12), calcWidth(hexagon12), calcHeight(hexagon12));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon12);
 
 			    }else if (hexagon13.isInside(clickX, clickY)) {
 			    	curHex = 13;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon13), getYMin(hexagon13), calcWidth(hexagon13), calcHeight(hexagon13));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon13);
 
 			    }else if (hexagon14.isInside(clickX, clickY)) {
 			    	curHex = 14;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon14), getYMin(hexagon14), calcWidth(hexagon14), calcHeight(hexagon14));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon14);
 
 			    }else if (hexagon15.isInside(clickX, clickY)) {
 			    	curHex = 15;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon15), getYMin(hexagon15), calcWidth(hexagon15), calcHeight(hexagon15));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon15);
 	
 			    }else if (hexagon16.isInside(clickX, clickY)) {
 			    	curHex = 16;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon16), getYMin(hexagon16), calcWidth(hexagon16), calcHeight(hexagon16));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon16);
 
 			    }else if (hexagon17.isInside(clickX, clickY)) {
 			    	curHex = 17;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon17), getYMin(hexagon17), calcWidth(hexagon17), calcHeight(hexagon17));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon17);
 
 			    }else if (hexagon18.isInside(clickX, clickY)) {
 			    	curHex = 18;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon18), getYMin(hexagon18), calcWidth(hexagon18), calcHeight(hexagon18));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon18);
 
 			    }else if (hexagon19.isInside(clickX, clickY)) {
 			    	curHex = 19;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon19), getYMin(hexagon19), calcWidth(hexagon19), calcHeight(hexagon19));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
-
+			    	hexProcess(probability, curHex, hexagon19);
+			    	
 			    }else if (hexagon20.isInside(clickX, clickY)) {
 			    	curHex = 20;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon20), getYMin(hexagon20), calcWidth(hexagon20), calcHeight(hexagon20));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon20);
 
 			    }else if (hexagon21.isInside(clickX, clickY)) {
 			    	curHex = 21;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon21), getYMin(hexagon21), calcWidth(hexagon21), calcHeight(hexagon21));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon21);
 
 			    }else if (hexagon22.isInside(clickX, clickY)) {
 			    	curHex = 22;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon22), getYMin(hexagon22), calcWidth(hexagon22), calcHeight(hexagon22));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon22);
 
 			    }else if (hexagon23.isInside(clickX, clickY)) {
 			    	curHex = 23;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon23), getYMin(hexagon23), calcWidth(hexagon23), calcHeight(hexagon23));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon23);
 
 			    }else if (hexagon24.isInside(clickX, clickY)) {
 			    	curHex = 24;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon24), getYMin(hexagon24), calcWidth(hexagon24), calcHeight(hexagon24));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon24);
 
 			    }else if (hexagon25.isInside(clickX, clickY)) {
 			    	curHex = 25;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon25), getYMin(hexagon25), calcWidth(hexagon25), calcHeight(hexagon25));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon25);
 
 			    }else if (hexagon26.isInside(clickX, clickY)) {
 			    	curHex = 26;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon26), getYMin(hexagon26), calcWidth(hexagon26), calcHeight(hexagon26));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon26);
 	
 			    }else if (hexagon27.isInside(clickX, clickY)) {
 			    	curHex = 27;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon27), getYMin(hexagon27), calcWidth(hexagon27), calcHeight(hexagon27));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon27);
 
 			    }else if (hexagon28.isInside(clickX, clickY)) {
 			    	curHex = 28;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon28), getYMin(hexagon28), calcWidth(hexagon28), calcHeight(hexagon28));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon28);
 
 			    }else if (hexagon29.isInside(clickX, clickY)) {
 			    	curHex = 29;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon29), getYMin(hexagon29), calcWidth(hexagon29), calcHeight(hexagon29));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon29);
 
 			    }else if (hexagon30.isInside(clickX, clickY)) {
 			    	curHex = 30;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon30), getYMin(hexagon30), calcWidth(hexagon30), calcHeight(hexagon30));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon30);
 
 			    }else if (hexagon31.isInside(clickX, clickY)) {
 			    	curHex = 31;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon31), getYMin(hexagon31), calcWidth(hexagon31), calcHeight(hexagon31));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon31);
 
 			    }else if (hexagon32.isInside(clickX, clickY)) {
 			    	curHex = 32;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon32), getYMin(hexagon32), calcWidth(hexagon32), calcHeight(hexagon32));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon32);
 
 			    }else if (hexagon33.isInside(clickX, clickY)) {
 			    	curHex = 33;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon33), getYMin(hexagon33), calcWidth(hexagon33), calcHeight(hexagon33));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon33);
 	
 			    }else if (hexagon34.isInside(clickX, clickY)) {
 			    	curHex = 34;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon34), getYMin(hexagon34), calcWidth(hexagon34), calcHeight(hexagon34));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon34);
 
 			    }else if (hexagon35.isInside(clickX, clickY)) {
 			    	curHex = 35;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon35), getYMin(hexagon35), calcWidth(hexagon35), calcHeight(hexagon35));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon35);
 
 			    }else if (hexagon36.isInside(clickX, clickY)) {
 			    	curHex = 36;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon36), getYMin(hexagon36), calcWidth(hexagon36), calcHeight(hexagon36));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon36);
 
 			    }else if (hexagon37.isInside(clickX, clickY)) {
 			    	curHex = 37;
 			    	double probability = tileProcess(curHex, pFood, pMilPower, pInfluence);
 			    			
-			    	if (tileTakeAttempt(probability) == true) {
-			    		col = playerColor;
-			    		pControls[curHex-1] = curHex;
-			    		
-			    		if (isWeapFac(curHex) == true) {
-			    			pConMilPower[curHex-1] = curHex;
-			    		} else if (isMediaComp(curHex) == true) {
-			    			pConInfluence[curHex-1] = curHex;
-			    		} else if (isFarmland(curHex) == true) {
-			    			pConFood[curHex-1] = curHex;
-			    		}
-			    		
-			    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
-			    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
-			    		drawingPanel.paintImmediately(getXMin(hexagon37), getYMin(hexagon37), calcWidth(hexagon37), calcHeight(hexagon37));
-			    		takeSuccess();
-			    		
-			    	}else if (tileTakeAttempt(probability) == false){
-			    		failedTake();
-			    	}
+			    	hexProcess(probability, curHex, hexagon37);
 			   
 			    }else {
 			    	System.out.println("NO HEX DETECTED");
@@ -1781,6 +1047,29 @@ public class Draw extends JFrame {
         	return hexagon1.contains(x, y);
         }
         
+    }
+    
+    private void hexProcess(double probability, int curHex, Hexagon hexagon) {
+    	if (tileTakeAttempt(probability) == true) {
+    		col = playerColor;
+    		pControls[curHex-1] = curHex;
+    		
+    		if (isWeapFac(curHex) == true) {
+    			pConMilPower[curHex-1] = curHex;
+    		} else if (isMediaComp(curHex) == true) {
+    			pConInfluence[curHex-1] = curHex;
+    		} else if (isFarmland(curHex) == true) {
+    			pConFood[curHex-1] = curHex;
+    		}
+    		
+    		tileLoss(aiOneControls, aiTwoControls, aiThreeControls, curHex, milPowerAIOne, influenceAIOne, foodAIOne, milPowerAITwo, influenceAITwo,
+    				foodAITwo, milPowerAIThree, influenceAIThree, foodAIThree, isWeapFac(curHex), isMediaComp(curHex), isFarmland(curHex));
+    		drawingPanel.paintImmediately(getXMin(hexagon), getYMin(hexagon), calcWidth(hexagon), calcHeight(hexagon));
+    		takeSuccess();
+    		
+    	}else if (tileTakeAttempt(probability) == false){
+    		failedTake();
+    	}
     }
     
     private String colCheck() {
